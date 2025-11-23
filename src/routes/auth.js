@@ -5,6 +5,10 @@ const User = require("../models/User");
 
 const router = express.Router();
 
+router.get("/test", (req, res) => {
+  res.json({ message: "Auth test working" });
+});
+
 router.post("/login", async (req, res) => {
   try {
     const { email, password } = req.body;
