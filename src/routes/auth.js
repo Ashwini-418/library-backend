@@ -9,17 +9,25 @@ router.post("/login", async (req, res) => {
   try {
     const { email, password } = req.body;
 
+    console.log("Login attempt:", { email, password });
+
     if (!email || !password) {
       return res.status(400).json({ error: "Email and password are required" });
     }
 
     const user = await User.findByEmail(email);
 
+    console.log("User found:", user ? "Yes" : "No");
+    if (user) {
+      console.log("Stored password hash:", user.password);
+    }
+
     if (!user) {
       return res.status(401).json({ error: "Invalid credentials" });
     }
 
     const isPasswordValid = await bcrypt.compare(password, user.password);
+    console.log("Password valid:", isPasswordValid);
 
     if (!isPasswordValid) {
       return res.status(401).json({ error: "Invalid credentials" });
